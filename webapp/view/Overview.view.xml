@@ -1,0 +1,134 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.Overview"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:mc="sap.suite.ui.microchart">
+    <f:DynamicPage id="overviewPage" class="sapUiNoContentPadding">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="IT Service Overview" level="H2"/>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="Monitor incidents, service levels and support activity"/>
+                </f:expandedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <VBox>
+                <!-- KPI Tiles -->
+                <l:HorizontalLayout class="sapUiSmallMargin">
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Open Tickets" subheader="Currently active incidents" press="onNavToTickets">
+                        <TileContent>
+                            <NumericContent value="{data>/KPIs/OpenTickets}" valueColor="Neutral" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Critical Tickets" subheader="Require immediate attention" press="onNavToTickets">
+                        <TileContent>
+                            <NumericContent value="{data>/KPIs/CriticalTickets}" valueColor="Error" indicator="Up" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="SLA At Risk" subheader="Approaching SLA threshold" press="onNavToSla">
+                        <TileContent>
+                            <NumericContent value="{data>/KPIs/SlaAtRisk}" valueColor="Critical" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="SLA Breached" subheader="Requires escalation" press="onNavToSla">
+                        <TileContent>
+                            <NumericContent value="{data>/KPIs/SlaBreached}" valueColor="Error" indicator="Up" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Resolved Today" subheader="Successfully resolved" press="onNavToTickets">
+                        <TileContent>
+                            <NumericContent value="{data>/KPIs/ResolvedToday}" valueColor="Good" />
+                        </TileContent>
+                    </GenericTile>
+                </l:HorizontalLayout>
+
+                <!-- Analytics Section -->
+                <Title text="Operational Analytics" level="H3" class="sapUiSmallMargin" />
+                <l:Grid defaultSpan="XL3 L3 M6 S12" class="sapUiSmallMargin">
+                    <!-- Status Distribution -->
+                    <VBox>
+                        <Title text="Ticket Status" level="H5" class="sapUiTinyMarginBottom"/>
+                        <mc:InteractiveBarChart labelWidth="25%" items="{path: 'data>/Analytics/Status', templateShareable: false}">
+                            <mc:items>
+                                <mc:InteractiveBarChartItem label="{data>label}" value="{data>value}" color="{data>color}" />
+                            </mc:items>
+                        </mc:InteractiveBarChart>
+                    </VBox>
+                    <!-- Priority Distribution -->
+                    <VBox>
+                        <Title text="Ticket Priority" level="H5" class="sapUiTinyMarginBottom"/>
+                        <mc:InteractiveDonutChart segments="{path: 'data>/Analytics/Priority', templateShareable: false}">
+                            <mc:segments>
+                                <mc:InteractiveDonutChartSegment label="{data>label}" value="{data>value}" color="{data>color}" />
+                            </mc:segments>
+                        </mc:InteractiveDonutChart>
+                    </VBox>
+                    <!-- SLA Performance -->
+                    <VBox>
+                        <Title text="SLA Performance" level="H5" class="sapUiTinyMarginBottom"/>
+                        <mc:InteractiveDonutChart segments="{path: 'data>/Analytics/SLA', templateShareable: false}">
+                            <mc:segments>
+                                <mc:InteractiveDonutChartSegment label="{data>label}" value="{data>value}" color="{data>color}" />
+                            </mc:segments>
+                        </mc:InteractiveDonutChart>
+                    </VBox>
+                    <!-- Category Distribution -->
+                    <VBox>
+                        <Title text="Ticket Category" level="H5" class="sapUiTinyMarginBottom"/>
+                        <mc:InteractiveBarChart labelWidth="35%" items="{path: 'data>/Analytics/Category', templateShareable: false}">
+                            <mc:items>
+                                <mc:InteractiveBarChartItem label="{data>label}" value="{data>value}" />
+                            </mc:items>
+                        </mc:InteractiveBarChart>
+                    </VBox>
+                </l:Grid>
+
+                <!-- Recent Incidents Table -->
+                <Title text="Recent Incidents" level="H3" class="sapUiSmallMargin" />
+                <Table id="recentTicketsTable"
+                       items="{path: 'data>/Tickets', length: 5}"
+                       class="sapUiSmallMargin">
+                    <columns>
+                        <Column><Text text="Ticket ID"/></Column>
+                        <Column><Text text="Title"/></Column>
+                        <Column><Text text="Priority"/></Column>
+                        <Column><Text text="Status"/></Column>
+                        <Column><Text text="SLA Status"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation" press=".onTicketPress">
+                            <cells>
+                                <ObjectIdentifier title="{data>TicketID}" />
+                                <Text text="{data>Title}" />
+                                <ObjectStatus text="{data>Priority}" state="{
+                                    path: 'data>Priority',
+                                    formatter: '.formatter.priorityState'
+                                }" />
+                                <ObjectStatus text="{
+                                    path: 'data>Status',
+                                    formatter: '.formatter.statusText'
+                                }" state="{
+                                    path: 'data>Status',
+                                    formatter: '.formatter.statusState'
+                                }" />
+                                <ObjectStatus text="{
+                                    path: 'data>SLAStatus',
+                                    formatter: '.formatter.slaText'
+                                }" state="{
+                                    path: 'data>SLAStatus',
+                                    formatter: '.formatter.slaState'
+                                }" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,5 @@
+/* Custom styling for IT Helpdesk application */
+/* The application heavily relies on standard sap_horizon Fiori theme. */
+.sapUiNoContentPadding .sapFDynamicPageContent {
+    padding: 0 !important;
+}

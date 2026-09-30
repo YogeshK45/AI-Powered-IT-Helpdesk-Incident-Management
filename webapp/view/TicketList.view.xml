@@ -1,0 +1,102 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.TicketList"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core">
+    <f:DynamicPage id="ticketListPage" toggleHeaderOnTitleClick="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="IT Tickets"/>
+                </f:heading>
+                <f:actions>
+                    <Button text="Create Ticket" type="Emphasized" press=".onCreateTicketPress" />
+                </f:actions>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <HBox wrap="Wrap" class="sapUiTinyMarginBottom">
+                    <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                        <Label text="Search" />
+                        <SearchField id="searchField" width="300px" search=".onSearch" placeholder="Ticket ID or Title..." />
+                    </VBox>
+                    <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                        <Label text="Status" />
+                        <ComboBox id="statusFilter" selectionChange=".onFilterChange">
+                            <core:Item key="" text="All" />
+                            <core:Item key="NEW" text="New" />
+                            <core:Item key="ASSIGNED" text="Assigned" />
+                            <core:Item key="IN_PROGRESS" text="In Progress" />
+                            <core:Item key="RESOLVED" text="Resolved" />
+                            <core:Item key="CLOSED" text="Closed" />
+                        </ComboBox>
+                    </VBox>
+                    <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                        <Label text="Sort By" />
+                        <ComboBox id="sortSelect" selectionChange=".onSortChange">
+                            <core:Item key="CreatedAt" text="Created Date" />
+                            <core:Item key="Priority" text="Priority" />
+                            <core:Item key="Status" text="Status" />
+                        </ComboBox>
+                    </VBox>
+                </HBox>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <Table id="ticketsTable"
+                   items="{data>/Tickets}"
+                   growing="true"
+                   growingThreshold="20"
+                   class="sapUiResponsiveMargin">
+                <columns>
+                    <Column><Text text="Ticket ID"/></Column>
+                    <Column><Text text="Title"/></Column>
+                    <Column><Text text="Category"/></Column>
+                    <Column><Text text="Priority"/></Column>
+                    <Column><Text text="Status"/></Column>
+                    <Column><Text text="Requester"/></Column>
+                    <Column><Text text="Assigned To"/></Column>
+                    <Column><Text text="Support Team"/></Column>
+                    <Column><Text text="SLA Status"/></Column>
+                    <Column><Text text="Created At"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press=".onTicketPress">
+                        <cells>
+                            <ObjectIdentifier title="{data>TicketID}" />
+                            <Text text="{data>Title}" />
+                            <Text text="{data>Category}" />
+                            <ObjectStatus text="{data>Priority}" state="{
+                                path: 'data>Priority',
+                                formatter: '.formatter.priorityState'
+                            }" />
+                            <ObjectStatus text="{
+                                path: 'data>Status',
+                                formatter: '.formatter.statusText'
+                            }" state="{
+                                path: 'data>Status',
+                                formatter: '.formatter.statusState'
+                            }" />
+                            <Text text="{data>Requester}" />
+                            <Text text="{data>AssignedTo}" />
+                            <Text text="{data>SupportTeam}" />
+                            <ObjectStatus text="{
+                                path: 'data>SLAStatus',
+                                formatter: '.formatter.slaText'
+                            }" state="{
+                                path: 'data>SLAStatus',
+                                formatter: '.formatter.slaState'
+                            }" />
+                            <Text text="{
+                                path: 'data>CreatedAt',
+                                formatter: '.formatter.formatDate'
+                            }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,27 @@
+# Node dependencies
+node_modules/
+
+# Python virtual environment and caches
+.venv/
+venv/
+**/__pycache__/
+*.py[cod]
+*$py.class
+**/.pytest_cache/
+
+# Local Environment & Secrets (NEVER COMMIT)
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# Local vector database storage
+rag-backend/data/qdrant_storage/
+**/qdrant_storage/
+
+# macOS system files
+.DS_Store
+**/.DS_Store
+

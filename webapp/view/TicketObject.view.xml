@@ -1,0 +1,296 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.TicketObject"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+    xmlns:layout="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    
+    <uxap:ObjectPageLayout id="ObjectPageLayout" showTitleInHeaderContent="true" alwaysShowContentHeader="false" preserveHeaderStateOnScroll="false" headerContentPinnable="true" isChildPage="true" upperCaseAnchorBar="false">
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:expandedHeading>
+                    <Title text="{view>/TicketID} - {view>/Title}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </uxap:expandedHeading>
+                <uxap:snappedHeading>
+                    <Title text="{view>/TicketID} - {view>/Title}" wrapping="true" class="sapUiSmallMarginEnd"/>
+                </uxap:snappedHeading>
+                <uxap:actions>
+                    <Button id="btnAssign" text="Assign" press=".onAssign" enabled="{view>/actions/Assign}" />
+                    <Button id="btnStartWork" text="Start Work" type="Emphasized" press=".onStartWork" enabled="{view>/actions/StartWork}" />
+                    <Button id="btnResolve" text="Resolve" type="Accept" press=".onResolve" enabled="{view>/actions/Resolve}" />
+                    <Button id="btnClose" text="Close" press=".onClose" enabled="{view>/actions/Close}" />
+                    <Button id="btnReopen" text="Reopen" press=".onReopen" enabled="{view>/actions/Reopen}" />
+                </uxap:actions>
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
+            <layout:HorizontalLayout>
+                <layout:VerticalLayout class="sapUiLargeMarginEnd">
+                    <Label text="Priority" />
+                    <ObjectStatus text="{view>/Priority}" state="{
+                        path: 'view>/Priority',
+                        formatter: '.formatter.priorityState'
+                    }" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiLargeMarginEnd">
+                    <Label text="Status" />
+                    <ObjectStatus text="{
+                        path: 'view>/Status',
+                        formatter: '.formatter.statusText'
+                    }" state="{
+                        path: 'view>/Status',
+                        formatter: '.formatter.statusState'
+                    }" />
+                </layout:VerticalLayout>
+                <layout:VerticalLayout class="sapUiLargeMarginEnd">
+                    <Label text="SLA Status" />
+                    <ObjectStatus text="{
+                        path: 'view>/SLAStatus',
+                        formatter: '.formatter.slaText'
+                    }" state="{
+                        path: 'view>/SLAStatus',
+                        formatter: '.formatter.slaState'
+                    }" />
+                </layout:VerticalLayout>
+            </layout:HorizontalLayout>
+        </uxap:headerContent>
+
+        <uxap:sections>
+            <!-- General Information -->
+            <uxap:ObjectPageSection titleUppercase="false" title="General Information">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" columnsXL="2" columnsL="2" columnsM="2">
+                                <f:content>
+                                    <core:Title text="Incident Details" />
+                                    <Label text="Ticket ID" />
+                                    <Text text="{view>/TicketID}" />
+                                    <Label text="Title" />
+                                    <Text text="{view>/Title}" />
+                                    <Label text="Description" />
+                                    <Text text="{view>/Description}" />
+                                    <Label text="Category" />
+                                    <Text text="{view>/Category}" />
+                                    <Label text="Subcategory" />
+                                    <Text text="{view>/SubCategory}" />
+                                    <Label text="Priority" />
+                                    <Text text="{view>/Priority}" />
+                                    <Label text="Status" />
+                                    <Text text="{view>/Status}" />
+                                </f:content>
+                            </f:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- Requester Information -->
+            <uxap:ObjectPageSection titleUppercase="false" title="Requester Information">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12">
+                                <f:content>
+                                    <Label text="Requester" />
+                                    <Text text="{view>/Requester}" />
+                                    <Label text="Email" />
+                                    <Text text="{view>/RequesterEmail}" />
+                                    <Label text="Department" />
+                                    <Text text="{view>/RequesterDepartment}" />
+                                </f:content>
+                            </f:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- Assignment Section -->
+            <uxap:ObjectPageSection titleUppercase="false" title="Assignment">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12">
+                                    <f:content>
+                                        <Label text="Assigned To" />
+                                        <Text text="{view>/AssignedTo}" />
+                                        <Label text="Support Team" />
+                                        <Text text="{view>/SupportTeam}" />
+                                        <Label text="Escalation Level" />
+                                        <Text text="{view>/EscalationLevel}" />
+                                    </f:content>
+                                </f:SimpleForm>
+                                <Button text="Assign" press=".onAssign" class="sapUiSmallMarginBegin" />
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- SLA Information -->
+            <uxap:ObjectPageSection titleUppercase="false" title="SLA Information">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12">
+                                <f:content>
+                                    <Label text="SLA Target" />
+                                    <Text text="{view>/SLATargetHours} Hours" />
+                                    <Label text="Created At" />
+                                    <Text text="{
+                                        path: 'view>/CreatedAt',
+                                        formatter: '.formatter.formatDate'
+                                    }" />
+                                    <Label text="Due Date" />
+                                    <Text text="{
+                                        path: 'view>/DueDate',
+                                        formatter: '.formatter.formatDate'
+                                    }" />
+                                    <Label text="Elapsed Time" />
+                                    <Text text="{view>/SLA/Elapsed}" />
+                                    <Label text="Remaining Time" />
+                                    <Text text="{view>/SLA/Remaining}" />
+                                    <Label text="SLA Status" />
+                                    <ObjectStatus text="{
+                                        path: 'view>/SLAStatus',
+                                        formatter: '.formatter.slaText'
+                                    }" state="{
+                                        path: 'view>/SLAStatus',
+                                        formatter: '.formatter.slaState'
+                                    }" />
+                                </f:content>
+                            </f:SimpleForm>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            
+            <!-- AI Incident Analysis -->
+            <uxap:ObjectPageSection titleUppercase="false" title="AI Incident Analysis">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <HBox alignItems="Center" class="sapUiSmallMarginBottom">
+                                    <Label text="AI Analysis Status: " class="sapUiTinyMarginEnd" design="Bold"/>
+                                    <Text text="{= ${view>/ai/visible} ? 'Analyzed' : 'Not analyzed'}" class="sapUiSmallMarginEnd"/>
+                                    <Button id="btnAnalyzeAI" text="Analyze with AI" icon="sap-icon://chain-link" type="Emphasized" press=".onAnalyzeAI" />
+                                </HBox>
+
+                                <VBox visible="{view>/ai/visible}">
+                                    <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" columnsXL="2" columnsL="2" columnsM="2">
+                                        <f:content>
+                                            <core:Title text="AI Classification" />
+                                            <Label text="Category" />
+                                            <Text text="{view>/ai/AIClassification}" />
+                                            <Label text="Issue Type" />
+                                            <Text text="Predicted from text" />
+                                            <Label text="Suggested Priority" />
+                                            <HBox>
+                                                <Text text="{view>/ai/AIRecommendedPriority}" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                                                <Button text="Apply Priority" press=".onApplyAIPriority" size="xs" type="Transparent" />
+                                            </HBox>
+                                            <Label text="Suggested Support Team" />
+                                            <HBox>
+                                                <Text text="{view>/ai/AIRecommendedTeam}" class="sapUiTinyMarginEnd sapUiTinyMarginTop"/>
+                                                <Button text="Apply Support Team" press=".onApplyAITeam" size="xs" type="Transparent" />
+                                            </HBox>
+                                            
+                                            <core:Title text="Analysis" />
+                                            <Label text="AI Summary" />
+                                            <Text text="{view>/ai/AISummary}" />
+                                            <Label text="Recommended Resolution" />
+                                            <Text text="{view>/ai/AIResolution}" />
+                                        </f:content>
+                                    </f:SimpleForm>
+
+                                    <!-- Similar Incidents & Knowledge -->
+                                    <Title text="Similar Incidents" level="H4" class="sapUiSmallMarginTop" />
+                                    <List items="{view>/ai/SimilarIncidents}" showSeparators="Inner">
+                                        <StandardListItem title="{view>TicketID} - {view>Title}" description="Resolution: {view>Resolution}" info="Similarity: {view>Similarity}%" type="Navigation" press=".onSimilarIncidentPress" />
+                                    </List>
+                                    
+                                    <Title text="Knowledge Sources" level="H4" class="sapUiSmallMarginTop" />
+                                    <List items="{view>/ai/KnowledgeSources}" showSeparators="Inner">
+                                        <StandardListItem title="{view>Title}" description="Category: {view>Category}" info="Relevance: {view>Relevance}%" />
+                                    </List>
+                                </VBox>
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- Resolution -->
+            <uxap:ObjectPageSection titleUppercase="false" title="Resolution">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <MessageStrip text="Resolution is pending." type="Warning" showIcon="true" visible="{= ${view>/Status} !== 'RESOLVED' &amp;&amp; ${view>/Status} !== 'CLOSED' }" class="sapUiSmallMarginBottom" />
+                                <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" visible="{= ${view>/Status} === 'RESOLVED' || ${view>/Status} === 'CLOSED'}">
+                                    <f:content>
+                                        <Label text="Resolution" />
+                                        <Text text="{view>/Resolution}" />
+                                        <Label text="Resolution Notes" />
+                                        <Text text="{view>/ResolutionNotes}" />
+                                        <Label text="Resolved At" />
+                                        <Text text="{
+                                            path: 'view>/ResolvedAt',
+                                            formatter: '.formatter.formatDate'
+                                        }" />
+                                        <Label text="Resolved By" />
+                                        <Text text="{view>/ResolvedBy}" />
+                                    </f:content>
+                                </f:SimpleForm>
+                                <Button text="Resolve" type="Accept" press=".onResolve" visible="{= ${view>/Status} !== 'RESOLVED' &amp;&amp; ${view>/Status} !== 'CLOSED' &amp;&amp; ${view>/Status} !== 'NEW' }" class="sapUiSmallMarginBegin" />
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+            <!-- Comments -->
+            <uxap:ObjectPageSection titleUppercase="false" title="Comments">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <Button text="Add Comment" press=".onAddComment" class="sapUiSmallMarginBottom" />
+                                <List items="{comments>/}" showSeparators="Inner">
+                                    <FeedListItem sender="{comments>Author}" text="{comments>CommentText}" timestamp="{
+                                        path: 'comments>CreatedAt',
+                                        formatter: '.formatter.formatDate'
+                                    }" icon="sap-icon://employee" />
+                                </List>
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+            
+            <!-- Status History -->
+            <uxap:ObjectPageSection titleUppercase="false" title="Status History">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection titleUppercase="false">
+                        <uxap:blocks>
+                            <VBox class="sapUiSmallMargin">
+                                <List items="{history>/}" showSeparators="Inner">
+                                    <StandardListItem title="{history>OldStatus} → {history>NewStatus}" description="Changed by: {history>ChangedBy} | Reason: {history>Reason}" info="{
+                                        path: 'history>ChangedAt',
+                                        formatter: '.formatter.formatDate'
+                                    }" />
+                                </List>
+                            </VBox>
+                        </uxap:blocks>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
+            </uxap:ObjectPageSection>
+
+        </uxap:sections>
+    </uxap:ObjectPageLayout>
+</mvc:View>

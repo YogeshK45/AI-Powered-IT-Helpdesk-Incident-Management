@@ -1,0 +1,16 @@
+{
+  "name": "ai-it-helpdesk",
+  "version": "1.0.0",
+  "description": "AI-Powered IT Helpdesk & Incident Management",
+  "private": true,
+  "scripts": {
+    "start": "ui5 serve --open index.html",
+    "build": "ui5 build --clean-dest --include-task=generateManifestBundle"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^3.0.0"
+  },
+  "ui5": {
+    "dependencies": []
+  }
+}

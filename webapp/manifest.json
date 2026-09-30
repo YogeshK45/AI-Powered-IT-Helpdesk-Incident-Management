@@ -1,0 +1,199 @@
+{
+  "_version": "1.49.0",
+  "sap.app": {
+    "id": "it.helpdesk.incident",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "sourceTemplate": {
+      "id": "ui5template.basicSAPUI5ApplicationProject",
+      "version": "1.40.12"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.f": {},
+        "sap.ui.layout": {},
+        "sap.ui.table": {},
+        "sap.suite.ui.microchart": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "it.helpdesk.incident.i18n.i18n"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "it.helpdesk.incident.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "Overview",
+          "pattern": "",
+          "target": [
+            "TargetOverview"
+          ]
+        },
+        {
+          "name": "AllTickets",
+          "pattern": "tickets",
+          "target": [
+            "TargetAllTickets"
+          ]
+        },
+        {
+          "name": "MyTickets",
+          "pattern": "mytickets",
+          "target": [
+            "TargetMyTickets"
+          ]
+        },
+        {
+          "name": "TicketObject",
+          "pattern": "ticket/{ticketId}",
+          "target": [
+            "TargetTicketObject"
+          ]
+        },
+        {
+          "name": "SlaEscalations",
+          "pattern": "sla",
+          "target": [
+            "TargetSlaEscalations"
+          ]
+        },
+        {
+          "name": "KnowledgeBase",
+          "pattern": "kb",
+          "target": [
+            "TargetKnowledgeBase"
+          ]
+        },
+        {
+          "name": "AIAssistant",
+          "pattern": "ai",
+          "target": [
+            "TargetAIAssistant"
+          ]
+        },
+        {
+          "name": "CreateTicket",
+          "pattern": "create",
+          "target": [
+            "TargetCreateTicket"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetOverview": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "Overview",
+          "viewName": "Overview"
+        },
+        "TargetAllTickets": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "TicketList",
+          "viewName": "TicketList"
+        },
+        "TargetMyTickets": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "MyTickets",
+          "viewName": "MyTickets"
+        },
+        "TargetTicketObject": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "TicketObject",
+          "viewName": "TicketObject"
+        },
+        "TargetSlaEscalations": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "SlaEscalations",
+          "viewName": "SlaEscalations"
+        },
+        "TargetKnowledgeBase": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "KnowledgeBase",
+          "viewName": "KnowledgeBase"
+        },
+        "TargetAIAssistant": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "AIAssistant",
+          "viewName": "AIAssistant"
+        },
+        "TargetCreateTicket": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "CreateTicket",
+          "viewName": "CreateTicket"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "it.helpdesk.incident.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.CreateTicket"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout">
+    
+    <Page title="Create IT Ticket" showNavButton="true" navButtonPress=".onCancel">
+        <headerContent>
+            <Button text="Create Ticket" type="Emphasized" press=".onCreate" class="sapUiSmallMarginEnd" />
+        </headerContent>
+        <content>
+            <VBox class="sapUiResponsiveMargin">
+                <Title text="Create a new incident for IT support" level="H3" class="sapUiSmallMarginBottom" />
+                
+                <f:SimpleForm layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2">
+                    <f:content>
+                        <core:Title text="General Information" />
+                        
+                        <Label text="Title" required="true" />
+                        <Input value="{draft>/Title}" id="titleInput" placeholder="Brief issue summary" change=".onFormChange" />
+                        
+                        <Label text="Description" required="true" />
+                        <VBox>
+                            <TextArea value="{draft>/Description}" id="descInput" rows="4" width="100%" placeholder="Detailed issue description..." change=".onFormChange" />
+                            <Button text="Analyze Description with AI" icon="sap-icon://chain-link" press=".onAnalyzeAI" class="sapUiTinyMarginTop" type="Transparent" id="btnAnalyzeAI" />
+                            
+                            <!-- AI Recommendation Block -->
+                            <VBox visible="{ai>/visible}" class="sapUiTinyMarginTop" backgroundDesign="Solid" width="100%">
+                                <MessageStrip text="AI Analysis Result" type="Information" showIcon="true" class="sapUiTinyMarginBottom" />
+                                <HBox alignItems="Center">
+                                    <Label text="Suggested Category: " class="sapUiTinyMarginEnd sapUiTinyMarginBegin"/>
+                                    <Text text="{ai>/SuggestedCategory}" class="sapUiSmallMarginEnd"/>
+                                    <Label text="Suggested Priority: " class="sapUiTinyMarginEnd"/>
+                                    <Text text="{ai>/SuggestedPriority}" class="sapUiSmallMarginEnd"/>
+                                    <Label text="Suggested Team: " class="sapUiTinyMarginEnd"/>
+                                    <Text text="{ai>/SuggestedTeam}" class="sapUiSmallMarginEnd"/>
+                                </HBox>
+                                <HBox class="sapUiSmallMarginBegin sapUiSmallMarginBottom sapUiTinyMarginTop">
+                                    <Button text="Apply Recommendations" type="Accept" press=".onApplyRecommendations" />
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                        
+                        <Label text="Category" required="true" />
+                        <ComboBox id="categoryCombo" selectedKey="{draft>/Category}" items="{lookup>/Categories}" selectionChange=".onCategoryChange" width="100%">
+                            <core:Item key="{lookup>key}" text="{lookup>text}" />
+                        </ComboBox>
+                        
+                        <Label text="Subcategory" />
+                        <ComboBox selectedKey="{draft>/SubCategory}" items="{lookup>/SubCategories}" width="100%">
+                            <core:Item key="{lookup>key}" text="{lookup>text}" />
+                        </ComboBox>
+                        
+                        <Label text="Priority" />
+                        <ComboBox selectedKey="{draft>/Priority}" selectionChange=".onPriorityChange" width="100%">
+                            <core:Item key="Critical" text="Critical" />
+                            <core:Item key="High" text="High" />
+                            <core:Item key="Medium" text="Medium" />
+                            <core:Item key="Low" text="Low" />
+                        </ComboBox>
+                        
+                        <Label text="SLA Target" />
+                        <ObjectStatus text="{draft>/SLATargetDisplay}" state="Information" />
+                        
+                        <core:Title text="Requester Information" />
+                        
+                        <Label text="Requester" required="true" />
+                        <Input value="{draft>/Requester}" id="requesterInput" change=".onFormChange" />
+                        
+                        <Label text="Requester Email" />
+                        <Input value="{draft>/RequesterEmail}" />
+                        
+                        <Label text="Department" />
+                        <Input value="{draft>/RequesterDepartment}" />
+                        
+                        <core:Title text="Assignment" />
+                        
+                        <Label text="Support Team" />
+                        <ComboBox id="teamCombo" selectedKey="{draft>/SupportTeam}" items="{lookup>/Teams}" selectionChange=".onTeamChange" width="100%">
+                            <core:Item key="{lookup>key}" text="{lookup>text}" />
+                        </ComboBox>
+                        
+                        <Label text="Assigned To" />
+                        <ComboBox selectedKey="{draft>/AssignedTo}" items="{lookup>/Agents}" width="100%">
+                            <core:Item key="{lookup>key}" text="{lookup>text}" />
+                        </ComboBox>
+                        
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="Create Ticket" type="Emphasized" press=".onCreate" />
+                <Button text="Cancel" press=".onCancel" />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

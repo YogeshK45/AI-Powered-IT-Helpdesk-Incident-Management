@@ -1,0 +1,24 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <Dialog id="resolveTicketDialog" title="Resolve Ticket" contentWidth="400px">
+        <content>
+            <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12">
+                <f:content>
+                    <Label text="Resolution" required="true" />
+                    <Input value="{resolveModel>/Resolution}" placeholder="Brief resolution text" />
+                    
+                    <Label text="Resolution Notes" />
+                    <TextArea value="{resolveModel>/ResolutionNotes}" rows="3" placeholder="Detailed steps taken..." />
+                </f:content>
+            </f:SimpleForm>
+        </content>
+        <beginButton>
+            <Button text="Resolve" type="Accept" press=".onResolveDialogSubmit" />
+        </beginButton>
+        <endButton>
+            <Button text="Cancel" press=".onResolveDialogClose" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

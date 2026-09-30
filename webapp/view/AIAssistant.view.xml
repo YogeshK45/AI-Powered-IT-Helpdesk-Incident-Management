@@ -1,0 +1,129 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.AIAssistant"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+    <f:DynamicPage toggleHeaderOnTitleClick="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="AI Incident Assistant"/>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="AI-assisted incident analysis and resolution recommendations"/>
+                </f:expandedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <layout:HorizontalLayout allowWrap="true">
+                    <layout:VerticalLayout class="sapUiMediumMarginEnd">
+                        <Label text="Select Ticket (Optional)" />
+                        <Select id="ticketSelect" items="{tickets>/}" change=".onTicketSelect" width="300px" forceSelection="false">
+                            <core:Item key="{tickets>TicketID}" text="{tickets>TicketID} - {tickets>Title}" />
+                        </Select>
+                    </layout:VerticalLayout>
+                </layout:HorizontalLayout>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <layout:Grid defaultSpan="XL12 L12 M12 S12">
+                
+                <!-- Input Section -->
+                <Panel headerText="Incident Input" expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
+                    <VBox>
+                        <TextArea id="incidentDescInput" rows="5" width="100%" placeholder="Describe the incident or paste the user's issue description..." value="{view>/incidentText}" />
+                        <Toolbar class="sapUiTinyMarginTop" style="Clear">
+                            <ToolbarSpacer />
+                            <Button text="Clear" press=".onClear" />
+                            <Button id="btnAnalyze" text="Analyze Incident" type="Emphasized" icon="sap-icon://chain-link" press=".onAnalyze" />
+                        </Toolbar>
+                    </VBox>
+                </Panel>
+
+                <!-- Results Section -->
+                <VBox visible="{view>/ai/visible}" class="sapUiResponsiveMargin">
+                    <MessageStrip text="Analysis Complete" type="Success" showIcon="true" class="sapUiSmallMarginBottom" />
+                    
+                    <layout:Grid defaultSpan="XL6 L6 M12 S12" vSpacing="1" hSpacing="1">
+                        
+                        <Panel headerText="AI Classification" width="auto">
+                            <form:SimpleForm layout="ResponsiveGridLayout" labelSpanL="4" labelSpanM="4" emptySpanL="0" emptySpanM="0" columnsL="1" columnsM="1">
+                                <form:content>
+                                    <Label text="Category" />
+                                    <Text text="{view>/ai/AIClassification}" />
+                                    
+                                    <Label text="Issue Type" />
+                                    <Text text="{view>/ai/AIIssueType}" />
+                                    
+                                    <Label text="Suggested Priority" />
+                                    <Text text="{view>/ai/AIRecommendedPriority}" />
+                                    
+                                    <Label text="Suggested Team" />
+                                    <Text text="{view>/ai/AIRecommendedTeam}" />
+                                    
+                                    <Label text="Confidence" />
+                                    <ObjectStatus text="{view>/ai/AIConfidence}%" state="Success" />
+                                </form:content>
+                            </form:SimpleForm>
+                        </Panel>
+
+                        <Panel headerText="AI Summary" width="auto">
+                            <Text text="{view>/ai/AISummary}" />
+                        </Panel>
+                        
+                        <Panel headerText="Recommended Resolution" width="auto" class="sapUiSmallMarginTop">
+                            <Text text="{view>/ai/AIResolution}" />
+                        </Panel>
+
+                    </layout:Grid>
+
+                    <layout:Grid defaultSpan="XL6 L6 M12 S12" vSpacing="1" hSpacing="1">
+                        <Panel headerText="Similar Incidents" width="auto">
+                            <List items="{view>/ai/SimilarIncidents}" showSeparators="Inner">
+                                <StandardListItem title="{view>TicketID} - {view>Title}" description="Resolution: {view>Resolution}" info="Similarity: {view>Similarity}%" type="Navigation" press=".onSimilarIncidentPress" />
+                            </List>
+                        </Panel>
+                        
+                        <Panel headerText="Knowledge Sources" width="auto">
+                            <List items="{view>/ai/KnowledgeSources}" showSeparators="Inner">
+                                <StandardListItem title="{view>Title}" description="Category: {view>Category}" info="Relevance: {view>Relevance}%" />
+                            </List>
+                        </Panel>
+                    </layout:Grid>
+                </VBox>
+
+                <!-- History Section -->
+                <Panel headerText="Recent AI Analyses" width="auto" class="sapUiResponsiveMargin">
+                    <Table items="{view>/recentAnalyses}">
+                        <columns>
+                            <Column><Text text="Ticket ID"/></Column>
+                            <Column><Text text="Category"/></Column>
+                            <Column><Text text="Priority"/></Column>
+                            <Column><Text text="Confidence"/></Column>
+                            <Column><Text text="Date"/></Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem>
+                                <cells>
+                                    <Text text="{view>TicketID}" />
+                                    <Text text="{view>Category}" />
+                                    <Text text="{view>Priority}" />
+                                    <Text text="{view>Confidence}%" />
+                                    <Text text="{
+                                        path: 'view>AnalysisDate',
+                                        formatter: '.formatter.formatDate'
+                                    }" />
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </Panel>
+
+            </layout:Grid>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

@@ -1,0 +1,111 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.MyTickets"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout">
+    <f:DynamicPage id="myTicketsPage" toggleHeaderOnTitleClick="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="My Tickets"/>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="Tickets assigned to you"/>
+                </f:expandedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:content>
+            <VBox>
+                <l:HorizontalLayout class="sapUiSmallMargin">
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="My Open Tickets" subheader="Currently active">
+                        <TileContent>
+                            <NumericContent value="{data>/MyKPIs/OpenTickets}" valueColor="Neutral" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="My Critical" subheader="Immediate attention">
+                        <TileContent>
+                            <NumericContent value="{data>/MyKPIs/CriticalTickets}" valueColor="Error" indicator="Up" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="My SLA At Risk" subheader="Approaching threshold">
+                        <TileContent>
+                            <NumericContent value="{data>/MyKPIs/SlaAtRisk}" valueColor="Critical" />
+                        </TileContent>
+                    </GenericTile>
+                    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Resolved Today" subheader="Successfully completed">
+                        <TileContent>
+                            <NumericContent value="{data>/MyKPIs/ResolvedToday}" valueColor="Good" />
+                        </TileContent>
+                    </GenericTile>
+                </l:HorizontalLayout>
+                
+                <Table id="myTicketsTable"
+                   items="{
+                       path: 'data>/Tickets', 
+                       templateShareable: false,
+                       filters: [{path: 'AssignedToUserID', operator: 'EQ', value1: 'ADMIN001'}]
+                   }"
+                   class="sapUiResponsiveMargin">
+                <headerToolbar>
+                    <OverflowToolbar>
+                        <Title text="Tickets" level="H2"/>
+                        <ToolbarSpacer/>
+                        <SearchField id="searchField" width="200px" search=".onSearch" placeholder="Search..." />
+                        <ComboBox id="statusFilter" width="150px" selectionChange=".onFilterChange" placeholder="Status">
+                            <core:Item key="" text="All Statuses" />
+                            <core:Item key="NEW" text="New" />
+                            <core:Item key="ASSIGNED" text="Assigned" />
+                            <core:Item key="IN_PROGRESS" text="In Progress" />
+                            <core:Item key="RESOLVED" text="Resolved" />
+                        </ComboBox>
+                        <ComboBox id="sortSelect" width="150px" selectionChange=".onSortChange" placeholder="Sort By">
+                            <core:Item key="DueDate" text="Due Date" />
+                            <core:Item key="Priority" text="Priority" />
+                        </ComboBox>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column><Text text="Ticket ID"/></Column>
+                    <Column><Text text="Title"/></Column>
+                    <Column><Text text="Priority"/></Column>
+                    <Column><Text text="Status"/></Column>
+                    <Column><Text text="SLA Status"/></Column>
+                    <Column><Text text="Due Date"/></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Navigation" press=".onTicketPress">
+                        <cells>
+                            <ObjectIdentifier title="{data>TicketID}" />
+                            <Text text="{data>Title}" />
+                            <ObjectStatus text="{data>Priority}" state="{
+                                path: 'data>Priority',
+                                formatter: '.formatter.priorityState'
+                            }" />
+                            <ObjectStatus text="{
+                                path: 'data>Status',
+                                formatter: '.formatter.statusText'
+                            }" state="{
+                                path: 'data>Status',
+                                formatter: '.formatter.statusState'
+                            }" />
+                            <ObjectStatus text="{
+                                path: 'data>SLAStatus',
+                                formatter: '.formatter.slaText'
+                            }" state="{
+                                path: 'data>SLAStatus',
+                                formatter: '.formatter.slaState'
+                            }" />
+                            <Text text="{
+                                path: 'data>DueDate',
+                                formatter: '.formatter.formatDate'
+                            }" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

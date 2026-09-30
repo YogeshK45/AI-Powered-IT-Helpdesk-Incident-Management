@@ -1,0 +1,98 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.KnowledgeBase"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:layout="sap.ui.layout"
+    xmlns:core="sap.ui.core">
+    
+    <f:DynamicPage toggleHeaderOnTitleClick="true">
+        <f:title>
+            <f:DynamicPageTitle>
+                <f:heading>
+                    <Title text="IT Knowledge Base"/>
+                </f:heading>
+                <f:expandedContent>
+                    <Label text="Enterprise troubleshooting and support knowledge"/>
+                </f:expandedContent>
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader pinnable="true">
+                <HBox wrap="Wrap" class="sapUiTinyMarginBottom">
+                    <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                        <Label text="Search" />
+                        <SearchField id="searchField" width="300px" search=".onSearch" placeholder="Article ID, Title, Summary..." />
+                    </VBox>
+                    <VBox class="sapUiSmallMarginEnd sapUiTinyMarginBottom">
+                        <Label text="Category" />
+                        <ComboBox id="categoryFilter" selectionChange=".onFilterChange" width="200px">
+                            <core:Item key="All" text="All Categories" />
+                            <core:Item key="Network" text="Network" />
+                            <core:Item key="VPN" text="VPN" />
+                            <core:Item key="SAP" text="SAP" />
+                            <core:Item key="SAP Security" text="SAP Security" />
+                            <core:Item key="Hardware" text="Hardware" />
+                            <core:Item key="Software" text="Software" />
+                            <core:Item key="Email" text="Email" />
+                            <core:Item key="Printer" text="Printer" />
+                            <core:Item key="Security" text="Security" />
+                            <core:Item key="Access Management" text="Access Management" />
+                        </ComboBox>
+                    </VBox>
+                </HBox>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <layout:Splitter>
+                <layout:contentAreas>
+                    
+                    <!-- Article List -->
+                    <VBox width="100%">
+                        <layoutData>
+                            <layout:SplitterLayoutData size="40%" />
+                        </layoutData>
+                        <List id="articleList" items="{view>/articles}" mode="SingleSelectMaster" selectionChange=".onArticleSelect" growing="true" growingThreshold="20" class="sapUiResponsiveMargin">
+                            <ObjectListItem title="{view>Title}" type="Active" number="{view>ArticleID}" intro="{view>Category}">
+                                <attributes>
+                                    <ObjectAttribute text="{view>Summary}" />
+                                </attributes>
+                            </ObjectListItem>
+                        </List>
+                    </VBox>
+                    
+                    <!-- Article Detail -->
+                    <VBox width="100%" class="sapUiResponsiveMargin" visible="{= !!${view>/selectedArticle/ArticleID} }">
+                        <layoutData>
+                            <layout:SplitterLayoutData size="60%" />
+                        </layoutData>
+                        <Panel width="auto">
+                            <HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
+                                <Title text="{view>/selectedArticle/Title}" level="H2" />
+                                <Button text="Analyze Related Incidents" type="Emphasized" icon="sap-icon://chain-link" press=".onAnalyzeRelated" />
+                            </HBox>
+                            
+                            <ObjectAttribute title="Article ID" text="{view>/selectedArticle/ArticleID}" class="sapUiTinyMarginBottom" />
+                            <ObjectAttribute title="Category" text="{view>/selectedArticle/Category}" class="sapUiTinyMarginBottom" />
+                            <ObjectAttribute title="Author" text="{view>/selectedArticle/Author}" class="sapUiTinyMarginBottom" />
+                            <ObjectAttribute title="Last Updated" text="{
+                                path: 'view>/selectedArticle/LastUpdated',
+                                formatter: '.formatter.formatDate'
+                            }" class="sapUiSmallMarginBottom" />
+                            
+                            <Title text="Summary" level="H4" class="sapUiTinyMarginBottom" />
+                            <Text text="{view>/selectedArticle/Summary}" class="sapUiSmallMarginBottom" />
+                            
+                            <Title text="Content" level="H4" class="sapUiTinyMarginBottom" />
+                            <Text text="{view>/selectedArticle/Content}" class="sapUiSmallMarginBottom" />
+                            
+                            <Title text="Tags" level="H4" class="sapUiTinyMarginBottom" />
+                            <Text text="{view>/selectedArticle/Tags}" />
+                        </Panel>
+                    </VBox>
+
+                </layout:contentAreas>
+            </layout:Splitter>
+        </f:content>
+    </f:DynamicPage>
+</mvc:View>

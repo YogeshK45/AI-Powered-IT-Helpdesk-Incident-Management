@@ -1,0 +1,43 @@
+<mvc:View
+    controllerName="it.helpdesk.incident.controller.App"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:tnt="sap.tnt"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+    <tnt:ToolPage id="toolPage">
+        <tnt:header>
+            <tnt:ToolHeader>
+                <Button id="sideNavigationToggleButton"
+                        icon="sap-icon://menu2"
+                        type="Transparent"
+                        press=".onSideNavButtonPress">
+                    <layoutData>
+                        <OverflowToolbarLayoutData priority="NeverOverflow" />
+                    </layoutData>
+                </Button>
+                <Title text="IT Helpdesk &amp; Incident Management" level="H1" />
+                <ToolbarSpacer />
+                <Title text="{data>/CurrentUser/Name}" level="H3" class="sapUiTinyMarginEnd" />
+                <Avatar initials="SA" displaySize="XS" class="sapUiTinyMarginEnd" />
+            </tnt:ToolHeader>
+        </tnt:header>
+        <tnt:sideContent>
+            <tnt:SideNavigation selectedKey="overview" itemSelect=".onItemSelect">
+                <tnt:item>
+                    <tnt:NavigationList>
+                        <tnt:NavigationListItem text="Overview" icon="sap-icon://barchart" key="overview" />
+                        <tnt:NavigationListItem text="My Tickets" icon="sap-icon://my-sales-order" key="mytickets" />
+                        <tnt:NavigationListItem text="All Tickets" icon="sap-icon://list" key="tickets" />
+                        <tnt:NavigationListItem text="SLA &amp; Escalations" icon="sap-icon://alert" key="sla" />
+                        <tnt:NavigationListItem text="Knowledge Base" icon="sap-icon://education" key="kb" />
+                        <tnt:NavigationListItem text="AI Incident Assistant" icon="sap-icon://chain-link" key="ai" />
+                    </tnt:NavigationList>
+                </tnt:item>
+            </tnt:SideNavigation>
+        </tnt:sideContent>
+        <tnt:mainContents>
+            <App id="app" />
+        </tnt:mainContents>
+    </tnt:ToolPage>
+</mvc:View>
